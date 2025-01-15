@@ -7,6 +7,10 @@ public class Ohce {
     interactor = new ConsoleInteractor();
   }
 
+  public Ohce(ConsoleInteractor interactor) {
+    this.interactor = interactor;
+  }
+
   public void mainLoop() {
     while (true) {
       String input = interactor.readInput();
