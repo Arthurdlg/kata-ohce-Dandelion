@@ -3,29 +3,26 @@ package info.dmerej;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class OhceTest {
   public class StubConsole extends ConsoleInteractor {
-    public int number_of_calls = 0;
-    public ArrayList<String> calls = new ArrayList<>();
+    public Stack<String> calls = new Stack<>(){{
+      addAll(Arrays.asList("quit", "oto", "hello"));
+    }};
+    public ArrayList<String> outputs = new ArrayList<>();
     public String readInput(){
-      number_of_calls += 1;
-      switch (this.number_of_calls) {
-        case 1:
-          return "hello";
-        case 2:
-          return "oto";
-        case 3:
-          return "quit";
+      if(!calls.isEmpty()){
+        return calls.pop();
       }
-
-      return "";
+      return "quit";
     }
     public void printMessage(String message) {
-      calls.add(message);
+      outputs.add(message);
     }
   }
   @Test
@@ -46,8 +43,6 @@ public class OhceTest {
     Ohce ohce = new Ohce(console);
     ohce.mainLoop();
 
-    assert Objects.equals(console.calls.get(0), "olleh");
-    assert Objects.equals(console.calls.get(1), "oto");
-    assert Objects.equals(console.calls.get(2), "That was a palindrome!");
+    assert console.outputs.equals(new ArrayList<String>(Arrays.asList("olleh", "oto", "That was a palindrome!")));
   }
 }
