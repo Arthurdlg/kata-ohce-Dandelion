@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GreeterTest {
-  public static class InnerClass extends SystemClock {
+  public static class StubClock extends SystemClock {
     int i;
 
-    InnerClass(int i) {
+    StubClock(int i) {
       this.i = i;
     }
 
@@ -20,7 +20,7 @@ public class GreeterTest {
   @Test
   void nightlyGreeting() {
     // Assert that greeter says "Good night" when current hour is 0 (midnight)
-    Greeter greeter = new Greeter(new InnerClass(0));
+    Greeter greeter = new Greeter(new StubClock(0));
     assert greeter.greet().equalsIgnoreCase("good night");
   }
 
@@ -28,7 +28,7 @@ public class GreeterTest {
   void neverAsserts() {
     // Assert that the assertion in greet() is never thrown, by checking all hours from 0 to 23
     for (int i = 0; i <= 23; i++) {
-      Greeter greeter = new Greeter(new InnerClass(i));
+      Greeter greeter = new Greeter(new StubClock(i));
       try {
         greeter.greet();
       } catch (AssertionError error) {
